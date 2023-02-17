@@ -1,0 +1,97 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Example API
+  description: This is an example API specification.
+
+servers:
+  - url: https://api.example.com/v1
+    description: Production server
+
+paths:
+  /users:
+    get:
+      summary: Get a list of users
+      description: Returns a list of all users in the system.
+      responses:
+        '200':
+          description: A JSON array of user objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+    post:
+      summary: Add a new user
+      description: Creates a new user in the system.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: The newly created user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /users/{userId}:
+    get:
+      summary: Get a user by ID
+      description: Returns a single user object by ID.
+      parameters:
+        - in: path
+          name: userId
+          description: ID of the user to retrieve.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The user object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    put:
+      summary: Update a user
+      description: Updates an existing user in the system.
+      parameters:
+        - in: path
+          name: userId
+          description: ID of the user to update.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: The updated user object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+      required:
+        - name
+        - email
